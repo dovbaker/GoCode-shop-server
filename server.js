@@ -43,8 +43,8 @@ app.get("/products", (req, res) => {
 
 
 const productSchema = new mongoose.Schema({
-  id: Number,
-  title: String,
+    title: String,
+    id: Number,
   description: String,
   category: String,
   image: String
