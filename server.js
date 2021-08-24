@@ -39,23 +39,26 @@ app.get("/products", (req, res) => {
       }
      
     });
-    // app.post()
-});
-const todoSchema = new mongoose.Schema({
-  title: String,
-  userId: String,
-  completed: Boolean,
 });
 
-const Product = mongoose.model("product", todoSchema);
+
+const productSchema = new mongoose.Schema({
+  id: Number,
+  title: String,
+  description: String,
+  category: String,
+  image: String
+});
+
+const Product = mongoose.model("product", productSchema);
 
     
 app.post("/products", (req, res) => {
-  const { title } = req.body;
+  const { title, description, category, image } = req.body;
 
-  const todo = new Product({ title, completed: false, userId: "1" });
+  const product = new Product({ title, description, category, image });
 
-  todo.save();
+  product.save();
 
   res.send("OK!");
 });
