@@ -4,51 +4,37 @@ const fs = require('fs');
 
 
 
-// const data = fs.readFile("stam.json", "utf8", (err, data) =>
-// {
-//     const json= JSON.parse(data);
-
-//     json.push(
-//         {
-//             id: json.length,
-//             title: "hi"
-            
-//         }
-//     );
-//     fs.writeFile("stam.json",JSON.stringify(json),(err)=>{})
-// });
-
-
-// const http = require('http');
-
-// http.createServer((req, res) => {
-//     // console.log("hiiiiiiii");
-//     res.writeHead(200, { "Content-Type": "text/plain" });
-//     res.end("hello\n")
-// }).listen(8080);
-
 const exp = require("express");
 
 const app = exp();
 
 app.get("/:id", (req, res) => {
-     const { id } = req.params;
-     console.log(id);
+    const { id } = req.params;
+    
     fs.readFile("./products.json", "utf8", (err, data) => {
-        const products = JSON.parse(data);
-        const product = products.find((prod) => prod.id === +id);
+        if(!err)
+       { const products = JSON.parse(data);
+            const product = products.find((prod) => prod.id === +id);
+            if (!product)
+            {
+                            res.send("Product not found.");
 
-        res.send(product);
+            }
+            else
+            res.send(product);
+        }
+        else
+              res.send(ERR);
     })
    
 });
 
-app.get("/", (req, res) => {
-  
-  fs.readFile("./products.json", "utf8", (err, data) => {
-    const products = JSON.parse(data);
-
-    res.send(products);
+app.get("/products", (req, res) => {
+    fs.readFile("./products.json", "utf8", (err, data) => {
+      if (!err) {
+        const products = JSON.parse(data);
+        res.send(products);
+      } else res.send(ERR);
   });
 });
 
