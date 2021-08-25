@@ -116,27 +116,26 @@ app.get("/products", (req, res) => {
   let { title, min, max, category, description } = req.query;
   const serchFields = {};
   
-  title ? (serchFields.title = title ) : "";
-  //title ? (serchFields.title = " {$regex: /^" + title + "/i}") : "";
+  // title ? (serchFields.title = title ) : "";
   
-  min ? console.log("min price") : min = 0;
-  max ? console.log("max price") : max = Number.MAX_SAFE_INTEGER;
+  min ? 0 : min = 0;
+  max ? 0 : max = Number.MAX_SAFE_INTEGER;
   description ? (serchFields.description = description) : "";
   category ? (serchFields.category = category) : "";
   
-  console.log({...serchFields});
   Product.find(
     {
-      // ...serchFields,
-      title: { $regex: new RegExp(title, "i") },
-      description: { $regex: new RegExp(description, "i") },
-      category: { $regex: new RegExp(category, "i") },
-
+      ...serchFields,
+       title: { $regex: new RegExp(title, "i") },
+      // description: { $regex: new RegExp(description, "i") },
+      // category: { $regex: new RegExp(category, "i") },
       price: { $gte: min, $lte: max },
     },
     function (err, data) {
-      // console.log(data);
-      res.send("found:" + data);
+      if(data)
+        res.send("found:" + data);
+      else
+        res.send("not found");
     }
   );
 });
