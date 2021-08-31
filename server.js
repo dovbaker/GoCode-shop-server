@@ -6,7 +6,6 @@ const cors = require("cors");
 app.use(express.json());
 app.use(cors());
 require("dotenv").config();
-console.log(process.env.DB_USER);
 
 // app.get("/:id", (req, res) => {
 //     const { id } = req.params;
@@ -156,9 +155,9 @@ app.delete("/products/:id", (req, res) => {
 
 //connect to DB and then to client
 mongoose.connect(
-  "mongodb+srv://dov:baker@cluster0.jmif3.mongodb.net/gocode_shop?retryWrites=true&w=majority",
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jmif3.mongodb.net/gocode_shop?retryWrites=true&w=majority`,
   { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },
   () => {
-    app.listen(8080);
+    app.listen(process.env.port || 8080);
   }
 );
