@@ -116,29 +116,34 @@ app.get("/api/products/:id", (req, res) => {
 
 //query product- title case insensetive and included
 app.get("/api/products", (req, res) => {
-  let { title, min, max, category, description } = req.query;
-  const serchFields = {};
+  Product.find({}, function (err, data) {
+    if (data) res.send(data);
+    else res.send("not found");
+  });
 
-  // title ? (serchFields.title = title ) : "";
+  // let { title, min, max, category, description } = req.query;
+  // const serchFields = {};
 
-  min ? 0 : (min = 0);
-  max ? 0 : (max = Number.MAX_SAFE_INTEGER);
-  description ? (serchFields.description = description) : "";
-  category ? (serchFields.category = category) : "";
+  // // title ? (serchFields.title = title ) : "";
 
-  Product.find(
-    {
-      ...serchFields,
-      title: { $regex: new RegExp(title, "i") },
-      // description: { $regex: new RegExp(description, "i") },
-      // category: { $regex: new RegExp(category, "i") },
-      // price: { $gte: min, $lte: max },
-    },
-    function (err, data) {
-      if (data) res.send(data);
-      else res.send("not found");
-    }
-  );
+  // min ? 0 : (min = 0);
+  // max ? 0 : (max = Number.MAX_SAFE_INTEGER);
+  // description ? (serchFields.description = description) : "";
+  // category ? (serchFields.category = category) : "";
+
+  // Product.find(
+  //   {
+  //     ...serchFields,
+  //     title: { $regex: new RegExp(title, "i") },
+  //     // description: { $regex: new RegExp(description, "i") },
+  //     // category: { $regex: new RegExp(category, "i") },
+  //     // price: { $gte: min, $lte: max },
+  //   },
+  //   function (err, data) {
+  //     if (data) res.send(data);
+  //     else res.send("not found");
+  //   }
+  // );
 });
 
 //delete product
