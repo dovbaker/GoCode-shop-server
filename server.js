@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+app.use(express.static("client/build"));
 app.use(express.json());
 app.use(cors());
 require("dotenv").config();
@@ -81,7 +82,7 @@ app.post("/products", (req, res) => {
 });
 
 //update product
-app.put("/products/:id", (req, res) => {
+app.put("/api/products/:id", (req, res) => {
   const { id } = req.params;
   const { title, price, description, category, image } = req.body;
   const updateFields = {};
@@ -101,7 +102,7 @@ app.put("/products/:id", (req, res) => {
 });
 
 //get by id
-app.get("/products/:id", (req, res) => {
+app.get("/api/products/:id", (req, res) => {
   const { id } = req.params;
   console.log(id);
   Product.findById(id, (err, data) => {
@@ -114,7 +115,7 @@ app.get("/products/:id", (req, res) => {
 });
 
 //query product- title case insensetive and included
-app.get("/products", (req, res) => {
+app.get("/api/products", (req, res) => {
   let { title, min, max, category, description } = req.query;
   const serchFields = {};
 
@@ -131,7 +132,7 @@ app.get("/products", (req, res) => {
       title: { $regex: new RegExp(title, "i") },
       // description: { $regex: new RegExp(description, "i") },
       // category: { $regex: new RegExp(category, "i") },
-      price: { $gte: min, $lte: max },
+      // price: { $gte: min, $lte: max },
     },
     function (err, data) {
       if (data) res.send(data);
@@ -141,7 +142,7 @@ app.get("/products", (req, res) => {
 });
 
 //delete product
-app.delete("/products/:id", (req, res) => {
+app.delete("/api/products/:id", (req, res) => {
   const { id } = req.params;
 
   Product.findOneAndDelete(id, (err, data) => {
@@ -153,9 +154,13 @@ app.delete("/products/:id", (req, res) => {
   });
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(__dirname + "/client/build/index.html");
+});
+
 //connect to DB and then to client
 mongoose.connect(
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jmif3.mongodb.net/gocode_shop?retryWrites=true&w=majority`,
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.HOST}/gocode_shop?retryWrites=true&w=majority`,
   { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },
   () => {
     app.listen(process.env.PORT || 8080);
