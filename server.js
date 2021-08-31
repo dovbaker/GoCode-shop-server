@@ -158,6 +158,6 @@ mongoose.connect(
   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jmif3.mongodb.net/gocode_shop?retryWrites=true&w=majority`,
   { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },
   () => {
-    app.listen(process.env.port || 8080);
+    app.listen(process.env.PORT || 8080);
   }
 );
