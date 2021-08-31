@@ -2,7 +2,11 @@ const fs = require("fs");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors");
 app.use(express.json());
+app.use(cors());
+require("dotenv").config();
+console.log(process.env.DB_USER);
 
 // app.get("/:id", (req, res) => {
 //     const { id } = req.params;
@@ -67,7 +71,6 @@ function initProducts() {
     }
   });
 }
-
 initProducts();
 
 //add product
@@ -75,7 +78,7 @@ app.post("/products", (req, res) => {
   const { id, title, description, category, image } = req.body;
   const product = new Product({ id, title, description, category, image });
   product.save();
-  res.send("OK!");
+  res.send(res);
 });
 
 //update product
@@ -98,19 +101,14 @@ app.put("/products/:id", (req, res) => {
   });
 });
 
-
-
 //get by id
 app.get("/products/:id", (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
   console.log(id);
-  Product.findById(id,(err, data) => {
-    if (!err)
-    {
+  Product.findById(id, (err, data) => {
+    if (!err) {
       res.send(data);
-    }
-    else
-    {
+    } else {
       res.send("ERROR, did not find product.");
     }
   });
@@ -118,7 +116,6 @@ app.get("/products/:id", (req, res) => {
 
 //query product- title case insensetive and included
 app.get("/products", (req, res) => {
-
   let { title, min, max, category, description } = req.query;
   const serchFields = {};
 
@@ -138,7 +135,7 @@ app.get("/products", (req, res) => {
       price: { $gte: min, $lte: max },
     },
     function (err, data) {
-      if (data) res.send("found:" + data);
+      if (data) res.send(data);
       else res.send("not found");
     }
   );
@@ -159,7 +156,7 @@ app.delete("/products/:id", (req, res) => {
 
 //connect to DB and then to client
 mongoose.connect(
-  "mongodb://localhost/gocode_shop",
+  "mongodb+srv://dov:baker@cluster0.jmif3.mongodb.net/gocode_shop?retryWrites=true&w=majority",
   { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },
   () => {
     app.listen(8080);
