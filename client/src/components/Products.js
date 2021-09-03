@@ -7,7 +7,7 @@ const Products = ({ productList }) => {
   return (
     <Grid container spacing={3}>
       {productList.map((prod) => (
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Product
             key={prod.id}
             id={prod.id}

@@ -4,6 +4,7 @@ import About from "./views/About";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Home from "./views/Home";
 import ProductDeatails from "./views/ProductDetails";
+import MyAppBar from "./components/MyAppBar";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           </ul>
         </nav>
         <div>
+          <MyAppBar />
           <Switch>
             <Route path="/about/:id">
               <About />

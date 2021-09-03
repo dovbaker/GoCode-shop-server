@@ -1,4 +1,3 @@
-import Cart from "../components/Cart";
 import Products from "../components/Products";
 import RemoveContext from "../components/RemoveContext";
 import CartContext from "../components/CartContext";
@@ -61,13 +60,14 @@ const Home = () => {
 
   const onChoose = (e) => {
     if (e.target.value === "all") SetProductList(productListOrigin);
-    else
+    else {
       SetProductList(
         productListOrigin.filter((prod) => prod.category === e.target.value)
       );
-    SetProductListFilter(
-      productListOrigin.filter((prod) => prod.category === e.target.value)
-    );
+      SetProductListFilter(
+        productListOrigin.filter((prod) => prod.category === e.target.value)
+      );
+    }
   };
 
   const priceFilter = (event, value) => {
@@ -95,7 +95,6 @@ const Home = () => {
   return (
     <CartContext.Provider value={{ addedToCart, onAdd }}>
       <RemoveContext.Provider value={onRemove}>
-        <Cart />
         <Header
           min={min}
           max={max}

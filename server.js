@@ -116,27 +116,27 @@ app.get("/api/products/:id", (req, res) => {
 
 //query product- title case insensetive and included
 app.get("/api/products", (req, res) => {
-  let { title, min, max, category, description } = req.query;
-  const serchFields = {};
+  // let { title, min, max, category, description } = req.query;
+  // const serchFields = {};
 
-  // title ? (serchFields.title = title ) : "";
+  // // title ? (serchFields.title = title ) : "";
 
-  min ? 0 : (min = 0);
-  max ? 0 : (max = Number.MAX_SAFE_INTEGER);
-  description ? (serchFields.description = description) : "";
-  category ? (serchFields.category = category) : "";
+  // min ? 0 : (min = 0);
+  // max ? 0 : (max = Number.MAX_SAFE_INTEGER);
+  // description ? (serchFields.description = description) : "";
+  // category ? (serchFields.category = category) : "";
 
   Product.find(
-    {
-      ...serchFields,
-      title: { $regex: new RegExp(title, "i") },
-      // description: { $regex: new RegExp(description, "i") },
-      // category: { $regex: new RegExp(category, "i") },
-      // price: { $gte: min, $lte: max },
-    },
+    // {
+    //   // ...serchFields,
+    //   // title: { $regex: new RegExp(title, "i") },
+    //   // description: { $regex: new RegExp(description, "i") },
+    //   // category: { $regex: new RegExp(category, "i") },
+    //   // price: { $gte: min, $lte: max },
+    // },
     function (err, data) {
       if (data) res.send(data);
-      else res.send("not found");
+      else res.send("not found!!!");
     }
   );
 });
@@ -160,7 +160,9 @@ app.get("*", (req, res) => {
 
 //connect to DB and then to client
 mongoose.connect(
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.HOST}/gocode_shop?retryWrites=true&w=majority`,
+  // `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jmif3.mongodb.net/gocode_shop?retryWrites=true&w=majority`,
+  //`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.HOST}/gocode_shop?retryWrites=true&w=majority`,
+  "mongodb://localhost/gocode_shop",
   { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },
   () => {
     app.listen(process.env.PORT || 8080);
